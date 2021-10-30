@@ -60,7 +60,19 @@ async function run() {
             res.json(result);
         });
 
-
+        app.put('/myorder/:id', async (req, res) => {
+            const id = req.params.id;
+            const status = req.body.status;
+            const filter = { _id: ObjectId(id) };
+            const options = { upsert: true };
+            const updateDoc = {
+                $set: {
+                    status: status
+                },
+            };
+            const result = await orderCollection.updateOne(filter, updateDoc, options);
+            res.json(result)
+        })
 
         app.post('/myorder', async (req, res) => {
             const newPlan = req.body
